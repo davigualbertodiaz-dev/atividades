@@ -1,0 +1,58 @@
+body{
+    margin: 0;
+    background-color: #3b2458
+}
+
+.logo{
+    color: aliceblue;
+    
+}
+
+header{
+    padding-right: 50px;
+    padding-left: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+nav{
+    display: flex;
+    gap: 20px;
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+    padding-top: 100px;
+    h1{
+        margin: 0;
+        font-size: 54px;
+        padding-top: 50px;
+    }
+    p{
+        display: flex;
+        padding-top: 15px;
+    }   
+}
+
+button{
+    display: flex;
+    margin: 0;
+    padding: 14px 25px;
+    text-transform: uppercase;
+    border-radius: 14px;
+    font-weight: bold;
+    background-color: #a259ec;
+    color: white;
+    letter-spacing: 0.5;
+    
+}
