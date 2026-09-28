@@ -6,12 +6,12 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="./stylee.css">
-    <title>Document</title>
+    <title>Landing Pagee</title>
 </head>
 <body>
     
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary " bg-dark>
+    <nav class="navbar navbar-expand-lg bg-dark " data-bs-theme="dark" >
         <div class="container-fluid">
             <a class="navbar-brand" href="#" >Davizão</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -52,23 +52,90 @@
 </div>
 
 
-    <section class="mb-5">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="bg-primary text-white rounded text-center p-3 bg-dark ">col-md-4</div>
-            </div>
+  
 
-            <div class="col-md-4">
-                <div class="bg-primary text-white rounded text-center p-3">col-md-4</div>
+
+<section class="py-5 bg-light text-center">
+  <div class="container py-4">
+    
+    
+    <p class="text-uppercase text-warning fw-semibold small tracking-wide mb-1">
+      QUEM JÁ EXPERIMENTOU
+    </p>
+    <h2 class="fw-bold mb-4">
+      O que dizem nossos clientes
+    </h2>
+
+    
+    <div id="carouselDepoimentos" class="carousel slide" data-bs-ride="carousel">
+      
+      
+      <div class="carousel-indicators position-relative mt-4">
+        <button type="button" data-bs-target="#carouselDepoimentos" data-bs-slide-to="0" class="active bg-secondary" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselDepoimentos" data-bs-slide-to="1" class="bg-secondary" aria-label="Slide 2"></button>
+      </div>
+
+      <div class="carousel-inner px-5">
+        
+       
+        <div class="carousel-item active">
+          <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+              <div class="text-warning mb-3 fs-5">
+                ★★★★★
+              </div>
+              <p class="fs-5 fst-italic text-dark mb-4">
+                "Melhores Pokemons da HISTORIA"
+              </p>
+              <div class="d-flex align-items-center justify-content-center gap-3">
+                <div class="text-start">
+                  <h6 class="fw-bold mb-0">Ash, o criador</h6>
+                  <small class="text-muted">Assinante desde 1990</small>
+                </div>
+              </div>
             </div>
-            
-            <div class="col-md-4">
-                <div class="bg-primary text-white rounded text-center p-3 bg-danger">col-md-4</div>
-            </div>
+          </div>
         </div>
-    </section>
 
+        
+        <div class="carousel-item">
+          <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+              <div class="text-warning mb-3 fs-5">
+                ★★★★★
+              </div>
+              <p class="fs-5 fst-italic text-dark mb-4">
+                "Como não batalhar com pokemons de OTIMA qualidaade"
+              </p>
+              <div class="d-flex align-items-center justify-content-center gap-3">
+                <div class="text-start">
+                  <h6 class="fw-bold mb-0">Davi, the creator</h6>
+                  <small class="text-muted">Assinante desde A.C</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
+      </div>
+
+      
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselDepoimentos" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" style="filter: invert(1);" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselDepoimentos" data-bs-slide="next">
+        <span class="carousel-control-next-icon" style="filter: invert(1);" aria-hidden="true"></span>
+        <span class="visually-hidden">Próximo</span>
+      </button>
+
+    </div>
+  </div>
+</section>
+
+  </div>
+</section>
 
 
 
