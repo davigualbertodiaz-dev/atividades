@@ -1,0 +1,439 @@
+<!--Prompt utilizado: Atue como um estudante de engenharia de software no segundo semestre que esta aprendendo sobre vibe code na disciplina de front-end. Seu objetivo será fazer uma landing page contendo umas informações sobre pokemon e falando sobre mega evoluções aplicando conceitos de vibe code e desenvolvimento front end moderno. a pagina tem que conter:
+
+Hero
+Grid de destaques
+Seção de curiosidades e mecanicas
+
+escreva o codigo completo utilizando html e css (pode usar tailwind e bootstrap pra deixar mais bem estruturado), com foco em um design limpo, agradavel e tematico-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mega Evolução | Guia Pokémon</title>
+
+  <!-- Tailwind via CDN (prototipagem rápida, estilo "vibe code") -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Configurando o tema do Tailwind com as cores da página
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mega: {
+              900: "#0f0a1f",
+              800: "#1a1033",
+              700: "#2a1a4d",
+              500: "#8b5cf6",
+              400: "#a78bfa",
+              300: "#f0abfc",
+            },
+            fogo: "#f97316",
+            dragao: "#6366f1",
+            fantasma: "#7c3aed",
+            fada: "#ec4899",
+            lutador: "#dc2626",
+            psiquico: "#db2777",
+          },
+          fontFamily: {
+            titulo: ["Poppins", "sans-serif"],
+            corpo: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== CSS próprio (o que o Tailwind não resolve sozinho) ===== */
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #0f0a1f;
+      color: #e9e5f5;
+    }
+
+    /* Fundo do hero com "aura" de energia */
+    .hero-bg {
+      background:
+        radial-gradient(circle at 20% 30%, rgba(139, 92, 246, .35), transparent 45%),
+        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, .25), transparent 45%),
+        #0f0a1f;
+    }
+
+    /* Texto com gradiente */
+    .texto-gradiente {
+      background: linear-gradient(90deg, #f0abfc, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Pedra Mega estilizada (desenho próprio em CSS) */
+    .pedra {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      position: relative;
+      background: radial-gradient(circle at 35% 30%, #fff 0%, #f0abfc 12%, #8b5cf6 45%, #1e1b4b 100%);
+      box-shadow: 0 0 60px rgba(167, 139, 250, .7), 0 0 140px rgba(236, 72, 153, .35);
+      animation: flutuar 5s ease-in-out infinite;
+    }
+    /* Símbolo de dupla hélice dentro da pedra */
+    .pedra::before,
+    .pedra::after {
+      content: "";
+      position: absolute;
+      inset: 28%;
+      border: 6px solid rgba(255, 255, 255, .85);
+      border-radius: 50%;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      transform: rotate(35deg);
+    }
+    .pedra::after { transform: rotate(-35deg); opacity: .6; }
+
+    /* Anéis de energia girando */
+    .anel {
+      position: absolute;
+      inset: -30px;
+      border: 2px dashed rgba(240, 171, 252, .45);
+      border-radius: 50%;
+      animation: girar 18s linear infinite;
+    }
+    .anel.lento { inset: -60px; animation-duration: 30s; animation-direction: reverse; border-color: rgba(96, 165, 250, .3); }
+
+    @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+    @keyframes girar { to { transform: rotate(360deg); } }
+
+    /* Cards dos destaques */
+    .card {
+      background: linear-gradient(160deg, rgba(42, 26, 77, .9), rgba(26, 16, 51, .9));
+      border: 1px solid rgba(167, 139, 250, .18);
+      transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(240, 171, 252, .6);
+      box-shadow: 0 20px 40px -12px rgba(139, 92, 246, .5);
+    }
+
+    /* Faixa colorida no topo do card, cor vem de uma variável */
+    .card-topo {
+      height: 120px;
+      background: radial-gradient(circle at 50% 120%, var(--cor) 0%, transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Poppins", sans-serif;
+      font-weight: 800;
+      font-size: 3.5rem;
+      color: rgba(255, 255, 255, .9);
+      letter-spacing: -2px;
+    }
+
+    /* Barra de status */
+    .barra { height: 6px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .barra span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #a78bfa, #f0abfc); }
+
+    /* Acordeão de curiosidades sem JavaScript */
+    details summary { cursor: pointer; list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] .seta { transform: rotate(45deg); }
+    .seta { transition: transform .25s ease; }
+
+    /* Respeitar quem prefere menos animação */
+    @media (prefers-reduced-motion: reduce) {
+      .pedra, .anel { animation: none; }
+      .card { transition: none; }
+    }
+  </style>
+</head>
+
+<body class="font-corpo antialiased">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="fixed top-0 inset-x-0 z-50 backdrop-blur bg-mega-900/70 border-b border-white/5">
+    <nav class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="#" class="font-titulo font-bold text-lg flex items-center gap-2">
+        <span class="w-6 h-6 rounded-full bg-gradient-to-br from-mega-300 to-mega-500 shadow-[0_0_12px_#a78bfa]"></span>
+        Mega<span class="text-mega-400">Dex</span>
+      </a>
+      <ul class="hidden md:flex gap-8 text-sm text-white/70">
+        <li><a href="#destaques" class="hover:text-white transition">Destaques</a></li>
+        <li><a href="#mecanicas" class="hover:text-white transition">Mecânicas</a></li>
+        <li><a href="#curiosidades" class="hover:text-white transition">Curiosidades</a></li>
+      </ul>
+      <a href="#destaques" class="text-sm font-semibold px-4 py-2 rounded-full bg-mega-500 hover:bg-mega-400 transition">Explorar</a>
+    </nav>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero-bg min-h-screen flex items-center pt-16">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center py-16">
+      <div>
+        <span class="inline-block text-xs font-semibold uppercase tracking-widest text-mega-300 bg-mega-700/60 px-3 py-1 rounded-full mb-6">
+          Introduzida na 6ª geração · Pokémon X &amp; Y
+        </span>
+        <h1 class="font-titulo text-5xl md:text-6xl font-extrabold leading-tight mb-6">
+          Desperte o poder da <span class="texto-gradiente">Mega Evolução</span>
+        </h1>
+        <p class="text-lg text-white/70 mb-8 max-w-lg">
+          Uma transformação temporária que leva certos Pokémon além da evolução final,
+          mudando aparência, status, habilidade e às vezes até o tipo. Tudo isso no meio da batalha.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#destaques" class="px-6 py-3 rounded-full font-semibold bg-gradient-to-r from-mega-500 to-fada hover:opacity-90 transition shadow-lg shadow-mega-500/30">
+            Ver Megas em destaque
+          </a>
+          <a href="#mecanicas" class="px-6 py-3 rounded-full font-semibold border border-white/20 hover:bg-white/5 transition">
+            Como funciona?
+          </a>
+        </div>
+
+        <!-- números rápidos -->
+        <dl class="grid grid-cols-3 gap-4 mt-12 max-w-md">
+          <div>
+            <dt class="text-xs text-white/50">Ano de estreia</dt>
+            <dd class="font-titulo text-2xl font-bold">2013</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-white/50">Bônus de status</dt>
+            <dd class="font-titulo text-2xl font-bold">+100</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-white/50">Por batalha</dt>
+            <dd class="font-titulo text-2xl font-bold">1 Mega</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- visual: pedra mega -->
+      <div class="flex justify-center py-12">
+        <div class="pedra" aria-hidden="true">
+          <div class="anel"></div>
+          <div class="anel lento"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GRID DE DESTAQUES ================= -->
+  <section id="destaques" class="py-24 bg-mega-800">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-14">
+        <h2 class="font-titulo text-4xl font-bold mb-3">Megas em destaque</h2>
+        <p class="text-white/60 max-w-xl mx-auto">Algumas das Mega Evoluções mais marcantes, seja pela mudança de tipo, pela habilidade nova ou pelo impacto no competitivo.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Card 1 -->
+        <article class="card rounded-2xl overflow-hidden">
+          <div class="card-topo" style="--cor:#6366f1">X</div>
+          <div class="p-6">
+            <h3 class="font-titulo text-xl font-bold">Mega Charizard X</h3>
+            <div class="flex gap-2 my-3">
+              <span class="text-xs px-2 py-1 rounded-md bg-fogo/80">Fogo</span>
+              <span class="text-xs px-2 py-1 rounded-md bg-dragao/80">Dragão</span>
+            </div>
+            <p class="text-sm text-white/70 mb-4">Ganha o tipo Dragão e a habilidade <strong>Tough Claws</strong>, focando em ataques físicos com chamas azuis.</p>
+            <div class="text-xs text-white/50 mb-1">Ataque</div>
+            <div class="barra"><span style="width:88%"></span></div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card rounded-2xl overflow-hidden">
+          <div class="card-topo" style="--cor:#f97316">Y</div>
+          <div class="p-6">
+            <h3 class="font-titulo text-xl font-bold">Mega Charizard Y</h3>
+            <div class="flex gap-2 my-3">
+              <span class="text-xs px-2 py-1 rounded-md bg-fogo/80">Fogo</span>
+              <span class="text-xs px-2 py-1 rounded-md bg-sky-500/80">Voador</span>
+            </div>
+            <p class="text-sm text-white/70 mb-4">Ativa <strong>Drought</strong> ao entrar, deixando o sol forte e turbinando seus ataques especiais de fogo.</p>
+            <div class="text-xs text-white/50 mb-1">Ataque Especial</div>
+            <div class="barra"><span style="width:95%"></span></div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card rounded-2xl overflow-hidden">
+          <div class="card-topo" style="--cor:#db2777">ψ</div>
+          <div class="p-6">
+            <h3 class="font-titulo text-xl font-bold">Mega Mewtwo Y</h3>
+            <div class="flex gap-2 my-3">
+              <span class="text-xs px-2 py-1 rounded-md bg-psiquico/80">Psíquico</span>
+            </div>
+            <p class="text-sm text-white/70 mb-4">Um dos Pokémon com maior total de status já criado, com Ataque Especial absurdo.</p>
+            <div class="text-xs text-white/50 mb-1">Ataque Especial</div>
+            <div class="barra"><span style="width:100%"></span></div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="card rounded-2xl overflow-hidden">
+          <div class="card-topo" style="--cor:#7c3aed">☾</div>
+          <div class="p-6">
+            <h3 class="font-titulo text-xl font-bold">Mega Gengar</h3>
+            <div class="flex gap-2 my-3">
+              <span class="text-xs px-2 py-1 rounded-md bg-fantasma/80">Fantasma</span>
+              <span class="text-xs px-2 py-1 rounded-md bg-purple-900/80">Venenoso</span>
+            </div>
+            <p class="text-sm text-white/70 mb-4">Com <strong>Shadow Tag</strong>, impede o oponente de trocar de Pokémon. Foi banido para o nível Uber.</p>
+            <div class="text-xs text-white/50 mb-1">Velocidade</div>
+            <div class="barra"><span style="width:82%"></span></div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="card rounded-2xl overflow-hidden">
+          <div class="card-topo" style="--cor:#dc2626">✊</div>
+          <div class="p-6">
+            <h3 class="font-titulo text-xl font-bold">Mega Lucario</h3>
+            <div class="flex gap-2 my-3">
+              <span class="text-xs px-2 py-1 rounded-md bg-lutador/80">Lutador</span>
+              <span class="text-xs px-2 py-1 rounded-md bg-slate-500/80">Aço</span>
+            </div>
+            <p class="text-sm text-white/70 mb-4">Recebe <strong>Adaptability</strong>, que aumenta ainda mais o dano de golpes do mesmo tipo.</p>
+            <div class="text-xs text-white/50 mb-1">Ataque</div>
+            <div class="barra"><span style="width:84%"></span></div>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="card rounded-2xl overflow-hidden">
+          <div class="card-topo" style="--cor:#ec4899">✦</div>
+          <div class="p-6">
+            <h3 class="font-titulo text-xl font-bold">Mega Gardevoir</h3>
+            <div class="flex gap-2 my-3">
+              <span class="text-xs px-2 py-1 rounded-md bg-psiquico/80">Psíquico</span>
+              <span class="text-xs px-2 py-1 rounded-md bg-fada/80">Fada</span>
+            </div>
+            <p class="text-sm text-white/70 mb-4">Com <strong>Pixilate</strong>, transforma golpes Normais em Fada, e o Hyper Voice vira uma arma.</p>
+            <div class="text-xs text-white/50 mb-1">Ataque Especial</div>
+            <div class="barra"><span style="width:90%"></span></div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MECÂNICAS ================= -->
+  <section id="mecanicas" class="py-24">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-14">
+        <h2 class="font-titulo text-4xl font-bold mb-3">Como a Mega Evolução funciona</h2>
+        <p class="text-white/60 max-w-xl mx-auto">As regras básicas que todo treinador precisa conhecer.</p>
+      </div>
+
+      <!-- passo a passo -->
+      <ol class="grid md:grid-cols-4 gap-6 mb-16">
+        <li class="rounded-2xl p-6 bg-mega-800 border border-white/5">
+          <span class="font-titulo text-3xl font-extrabold text-mega-400">01</span>
+          <h3 class="font-semibold mt-3 mb-2">Mega Pedra</h3>
+          <p class="text-sm text-white/60">O Pokémon segura a pedra específica da sua espécie, como a Charizardite X.</p>
+        </li>
+        <li class="rounded-2xl p-6 bg-mega-800 border border-white/5">
+          <span class="font-titulo text-3xl font-extrabold text-mega-400">02</span>
+          <h3 class="font-semibold mt-3 mb-2">Key Stone</h3>
+          <p class="text-sm text-white/60">O treinador carrega a Key Stone, normalmente num bracelete ou acessório.</p>
+        </li>
+        <li class="rounded-2xl p-6 bg-mega-800 border border-white/5">
+          <span class="font-titulo text-3xl font-extrabold text-mega-400">03</span>
+          <h3 class="font-semibold mt-3 mb-2">Laço de confiança</h3>
+          <p class="text-sm text-white/60">Na história, a energia só reage quando existe um vínculo forte entre os dois.</p>
+        </li>
+        <li class="rounded-2xl p-6 bg-mega-800 border border-white/5">
+          <span class="font-titulo text-3xl font-extrabold text-mega-400">04</span>
+          <h3 class="font-semibold mt-3 mb-2">Transformação</h3>
+          <p class="text-sm text-white/60">Ativada no turno, dura até o fim da batalha ou até o Pokémon desmaiar.</p>
+        </li>
+      </ol>
+
+      <!-- tabela comparativa -->
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="rounded-2xl p-6 bg-gradient-to-br from-mega-700 to-mega-800 border border-white/5">
+          <h3 class="font-titulo font-bold text-lg mb-2">📈 Status</h3>
+          <p class="text-sm text-white/70">O total de status base sobe exatamente <strong>100 pontos</strong>, distribuídos de forma diferente em cada Mega.</p>
+        </div>
+        <div class="rounded-2xl p-6 bg-gradient-to-br from-mega-700 to-mega-800 border border-white/5">
+          <h3 class="font-titulo font-bold text-lg mb-2">🧬 Habilidade e tipo</h3>
+          <p class="text-sm text-white/70">A habilidade quase sempre muda, e algumas Megas ganham um tipo novo, como Ampharos virando Elétrico/Dragão.</p>
+        </div>
+        <div class="rounded-2xl p-6 bg-gradient-to-br from-mega-700 to-mega-800 border border-white/5">
+          <h3 class="font-titulo font-bold text-lg mb-2">⚖️ Limite</h3>
+          <p class="text-sm text-white/70">Só <strong>uma</strong> Mega Evolução por batalha. Escolher qual Pokémon transformar é parte da estratégia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CURIOSIDADES ================= -->
+  <section id="curiosidades" class="py-24 bg-mega-800">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="text-center mb-14">
+        <h2 class="font-titulo text-4xl font-bold mb-3">Curiosidades</h2>
+        <p class="text-white/60">Clique para revelar cada uma.</p>
+      </div>
+
+      <div class="space-y-4">
+        <details class="rounded-xl bg-mega-700/60 border border-white/5 p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            Rayquaza não precisa de Mega Pedra
+            <span class="seta text-2xl text-mega-300">+</span>
+          </summary>
+          <p class="text-sm text-white/70 mt-3">Mega Rayquaza só precisa conhecer o golpe <strong>Dragon Ascent</strong>. Ele ficou tão forte que a Smogon criou o tier "Anything Goes" só por causa dele.</p>
+        </details>
+
+        <details class="rounded-xl bg-mega-700/60 border border-white/5 p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            Só dois Pokémon têm duas Megas
+            <span class="seta text-2xl text-mega-300">+</span>
+          </summary>
+          <p class="text-sm text-white/70 mt-3">Charizard e Mewtwo possuem as versões X e Y, uma referência aos jogos em que a mecânica estreou.</p>
+        </details>
+
+        <details class="rounded-xl bg-mega-700/60 border border-white/5 p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            Mega Kangaskhan ataca duas vezes
+            <span class="seta text-2xl text-mega-300">+</span>
+          </summary>
+          <p class="text-sm text-white/70 mt-3">Com <strong>Parental Bond</strong>, o filhote sai da bolsa e acerta um segundo golpe. Foi uma das Megas mais temidas do VGC.</p>
+        </details>
+
+        <details class="rounded-xl bg-mega-700/60 border border-white/5 p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            Reversão Primal não é Mega Evolução
+            <span class="seta text-2xl text-mega-300">+</span>
+          </summary>
+          <p class="text-sm text-white/70 mt-3">Groudon e Kyogre usam a Red Orb e a Blue Orb para voltar à forma primal. Parece Mega, mas é uma mecânica separada.</p>
+        </details>
+
+        <details class="rounded-xl bg-mega-700/60 border border-white/5 p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            A mecânica sumiu e depois voltou
+            <span class="seta text-2xl text-mega-300">+</span>
+          </summary>
+          <p class="text-sm text-white/70 mt-3">Depois de Sun &amp; Moon, as Megas ficaram de fora dos jogos principais, dando lugar ao Dynamax e à Terastalização. Elas voltaram como destaque em <strong>Pokémon Legends: Z-A</strong> (2025), com Megas novas.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="py-10 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/50">
+      <p>Projeto acadêmico · Disciplina de Front-end · 2º semestre</p>
+      <p>Pokémon é marca registrada de Nintendo, Game Freak e The Pokémon Company. Página sem fins comerciais.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
